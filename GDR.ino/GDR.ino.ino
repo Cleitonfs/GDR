@@ -3,7 +3,7 @@
 Versão do Software: 1.0
 ******************************************************************************************************/
 //Update: 10-12-17 @genilton.cleiton@ufrpe.br
-  
+ 
   // inclusão de bibliotecas.    
   #include <Servo.h>    // inclui biblioteca de manipulação do servo motor.    
   #include <AFMotor.h>   // inclui biblioteca de manipulação dos motores DCs.  
@@ -12,6 +12,7 @@ Versão do Software: 1.0
   #define trigPin A0 //Pino TRIG do sensor no pino analógico A0
   #define echoPin A1 //Pino ECHO do sensor no pino analógico A1
   #define BUZZER A2  // Define o pino do buzzer (Som) no pino ANALÓGICO A0  
+  #define voltagePin A3 //Define o pino de entrada da tensão da bateira no pino A3
   AF_DCMotor motor1(1);    // Define o motor1 ligado ao M1  
   AF_DCMotor motor2(2);    // Define o motor2 ligado ao M2  
  
@@ -25,6 +26,11 @@ Versão do Software: 1.0
   long distancia_cm=0;
   int minimumRange=5; //tempo de resposta do sensor
   int maximumRange=200;
+
+  //variáveis para medição do nível de tensão da bateria
+  int voltageValue=0;
+  int outputValue=0;
+    
     
   // executado na inicialização do Arduino    
   void setup(){    
@@ -40,9 +46,23 @@ Versão do Software: 1.0
   }    
     
   // Função principal do Arduino    
-  void loop(){    
+  void loop(){  
+    checarBateria();
     pensar(); //inicia a função pensar  
   }    
+
+  //Função para checar nível de tensão na bateria. Se o nível estiver abaixo do limite, não deixar o robô iniciar o trajet.
+  void checarBateria(){
+    //faz a leitura da entrada analógica, ou seja, do nível de tensão atual da beteria
+    voltageValue = analogRead(voltagePin);
+    //mapeia o valor de entrada em uma entrada digital de 0 a 1023 e na saida pwm de 0  a 254
+    outputValue = map(voltageValue, 0, 1023, 0, 255);
+    do
+    { 
+    rotacao_Parado();
+    }
+    while (outputValue <= 852); //852 corresponde ao valor de entrada 9 volts. O valor convertido "v" é v = (1023 * y)/1023, onde "y" valor analógico de entrada 
+ }
     
   // Função para chamar outras funções e definir o que o robô fará  
   void pensar(){    

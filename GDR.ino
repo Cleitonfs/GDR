@@ -2,7 +2,7 @@
 ------------------------------------------GDR - Guide Dog Robot---------------------------------------
 Versão do Software: 1.0
 ******************************************************************************************************/
-Update: 10-12-17 @genilton.cleiton@ufrpe.br
+//Update: 10-12-17 @genilton.cleiton@ufrpe.br
   
   // inclusão de bibliotecas.    
   #include <Servo.h>    // inclui biblioteca de manipulação do servo motor.    
